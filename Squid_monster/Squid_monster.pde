@@ -1,46 +1,50 @@
 color blue = #0502D8;
+
 int x;
 int y;
-int z;
 int t;
-int w;
-float b;
-int time;
+
+float b;          // stored firing angle
+float inkDist;    // distance ink travels
 
 void setup() {
   size(800, 800, P2D);
-  background(blue);
-  x = 0;
 }
 
 void draw() {
   background(blue);
+
+  // delay before shooting ink
   if (x <= 50) {
-    x += 1;
+    x++;
   } else {
-    ink(z, w,b);
-    z += 5;
-    w += 5;
-    t += 1;
-    y += 1;
-    if (t==1) {
-    float angle = atan2(mouseY - y, mouseX - x);
-    b = angle;
-  }
+    // store angle once when ink starts
+    if (t == 0) {
+      b = atan2(mouseY - 400, mouseX - 400);
+    }
+
+    ink(inkDist, b);
+    inkDist += 8;
+
+    t++;
+    y++;
+
+    // reset after ink finishes
     if (y >= 100) {
-      x=0;
-      t=0;
-      z=0;
-      w=0;
-      y=0;
+      x = 0;
+      t = 0;
+      y = 0;
+      inkDist = 0;
     }
   }
+
   jellyfish(400, 400);
 }
 
 void jellyfish(int x, int y) {
   pushMatrix();
   translate(x, y);
+
   float ang = atan2(mouseY - y, mouseX - x);
   rotate(ang + HALF_PI);
 
@@ -61,19 +65,21 @@ void jellyfish(int x, int y) {
   popMatrix();
 }
 
-void ink(int z, int w, float b) {
+void ink(float dist, float angle) {
   pushMatrix();
   translate(400, 400);
-  rotate(b + HALF_PI +90);
+  rotate(angle + HALF_PI);
 
   noStroke();
   fill(0);
-  ellipse(z, w, 100, 100);
-  ellipse(z-12, w, 100, 100);
-  ellipse(z, w+34, 100, 100);
-  ellipse(z+41, w+61, 100, 100);
-  ellipse(z+76, w-22, 100, 100);
-  ellipse(z-13, w+123, 100, 100);
+
+  // shoot straight between the tentacles
+  ellipse(0, -dist, 100, 100);
+  ellipse(-12, -dist, 100, 100);
+  ellipse(0, -dist + 34, 100, 100);
+  ellipse(41, -dist + 61, 100, 100);
+  ellipse(76, -dist - 22, 100, 100);
+  ellipse(-13, -dist + 123, 100, 100);
 
   popMatrix();
 }
