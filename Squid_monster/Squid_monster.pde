@@ -3,9 +3,8 @@ color blue = #0502D8;
 int x;
 int y;
 int t;
-
 float b;
-float inkDist;
+int inkDist;
 
 void setup() {
   size(800, 800, P2D);
@@ -20,10 +19,8 @@ void draw() {
     if (t == 0) {
       b = atan2(mouseY - 400, mouseX - 400);
     }
-
     ink(inkDist, b);
     inkDist += 8;
-
     t++;
     y++;
 
@@ -38,18 +35,20 @@ void draw() {
   jellyfish(400, 400);
 }
 
-void eye(float p, float q) {
-  noStroke();
+void eye(int p, int q,int xsize, int ysize) {
+  pushMatrix();
+  strokeWeight(1);
+  translate(p, q);
   fill(255);
-  ellipse(p, q, 50, 50);
-  float ex = modelX(p, q);
-  float ey = modelY(p, q);
-  float ang = atan2(mouseY - ey, mouseX - ex);
-  float r = 10;
-  float px = p + cos(ang) * r;
-  float py = q + sin(ang) * r;
+  ellipse(0, 0, xsize, ysize);
+  popMatrix();
+  pushMatrix();
+  translate(p,q);
+  float ang = atan2(-mouseY + y, -mouseX + x);
+  translate(ang + TWO_PI,ang + TWO_PI);
   fill(0);
-  ellipse(px, py, 25, 25);
+  ellipse(0, 0, xsize/2, ysize/2);
+  popMatrix();
 }
 void jellyfish(int x, int y) {
   pushMatrix();
@@ -72,18 +71,18 @@ void jellyfish(int x, int y) {
   ellipse(100, 50, 10, 10);
   ellipse(-100, 50, 10, 10);
 
-  eye(100, -100);
-  eye(100, -30);
-  eye(100, -170);
-  eye(-100, -100);
-  eye(-100, -30);
-  eye(-100, -170);
+  eye(100, -100,50,50);
+  eye(100, -30,50,50);
+  eye(100, -170,50,50);
+  eye(-100, -100,50,50);
+  eye(-100, -30,50,50);
+  eye(-100, -170,50,50);
 
 
   popMatrix();
 }
 
-void ink(float dist, float angle) {
+void ink(int dist, float angle) {
   pushMatrix();
   translate(400, 400);
   rotate(angle + HALF_PI);
@@ -91,13 +90,12 @@ void ink(float dist, float angle) {
   noStroke();
   fill(0);
 
-  ellipse(0, -dist, 100, 100);
-  ellipse(-12, -dist, 100, 100);
-  ellipse(0, -dist + 34, 100, 100);
-  ellipse(41, -dist + 61, 100, 100);
-  ellipse(76, -dist - 22, 100, 100);
-  ellipse(-13, -dist + 123, 100, 100);
+  eye(0, -dist, 100, 100);
+  eye(-12, -dist, 100, 100);
+  eye(0, -dist + 34, 100, 100);
+  eye(41, -dist + 61, 100, 100);
+  eye(76, -dist - 22, 100, 100);
+  eye(-13, -dist + 123, 100, 100);
 
   popMatrix();
 }
-
