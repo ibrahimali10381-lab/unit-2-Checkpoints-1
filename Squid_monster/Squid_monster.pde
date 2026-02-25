@@ -1,9 +1,10 @@
 color blue = #0502D8;
 
-int x, y, t;
+int x;
+int y;
+int t;
 float b;
 int inkDist;
-int tentacleGrowth;
 
 void setup() {
   size(800, 800, P2D);
@@ -17,7 +18,6 @@ void draw() {
   } else {
     if (t == 0) {
       b = atan2(mouseY - 400, mouseX - 400);
-      tentacleGrowth += 20;
     }
     ink(inkDist, b);
     inkDist += 8;
@@ -35,19 +35,26 @@ void draw() {
   jellyfish(400, 400);
 }
 
-void eye(float px, float py, int xs, int ys) {
+void eye(int p, int q,int xsize, int ysize) {
   pushMatrix();
-  translate(px, py);
+  strokeWeight(1);
+  translate(p, q);
   fill(255);
-  ellipse(0, 0, xs, ys);
-
-  float ang = atan2(mouseY - (height/2 + py), mouseX - (width/2 + px));
-  float r = xs * 0.2;
-  fill(0);
-  ellipse(cos(ang) * r, sin(ang) * r, xs/2, ys/2);
+  ellipse(0, 0, xsize, ysize);
   popMatrix();
+  pushMatrix();
+  translate(p,q);
+  float ang = atan2(mouseY - (height/2 + p), mouseX - (width/2 + p));
+  float r = xsize * 0.2;
+  fill(0);
+  ellipse(cos(ang) * r, sin(ang) * r, xsize/2, ysize/2);
+  translate(ang + TWO_PI,ang + TWO_PI);
+  fill(0);
+  ellipse(0, 0, xsize/2, ysize/2);
+  popMatrix();
+  
+  
 }
-
 void jellyfish(int x, int y) {
   pushMatrix();
   translate(x, y);
@@ -59,15 +66,23 @@ void jellyfish(int x, int y) {
   noStroke();
   arc(0, 50, 300, 100, PI, TWO_PI);
 
-  stroke(0);
   strokeWeight(10);
+  stroke(0);
   arc(0, 50, 300, 200, 0, PI);
+  strokeWeight(15);
 
-  strokeWeight(8);
-  for (int i = -100; i <= 100; i += 200) {
-    line(i, -200 - tentacleGrowth, i, 10);
-    eye(i, -200 - tentacleGrowth, 40, 40);
-  }
+  line(-100, -200, -100, 10);
+  line(100, -200, 100, 10);
+  ellipse(100, 50, 10, 10);
+  ellipse(-100, 50, 10, 10);
+
+  eye(100, -100,50,50);
+  eye(100, -30,50,50);
+  eye(100, -170,50,50);
+  eye(-100, -100,50,50);
+  eye(-100, -30,50,50);
+  eye(-100, -170,50,50);
+
 
   popMatrix();
 }
@@ -80,9 +95,16 @@ void ink(int dist, float angle) {
   noStroke();
   fill(0);
 
-  eye(0, -dist, 80, 80);
-  eye(-20, -dist + 30, 80, 80);
-  eye(30, -dist - 20, 80, 80);
-
+  eye(0, -dist, 100, 100);
+  eye(-12, -dist, 100, 100);
+  eye(0, -dist + 34, 100, 100);
+  eye(41, -dist + 61, 100, 100);
+  eye(76, -dist - 22, 100, 100);
+  eye(-13, -dist + 123, 100, 100);
   popMatrix();
 }
+
+void tentacle(int r, int xp, int yp){
+  
+}
+
