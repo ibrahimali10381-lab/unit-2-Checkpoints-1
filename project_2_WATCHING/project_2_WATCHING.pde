@@ -20,9 +20,15 @@ float b1 = random(0, 255);
 int z = 0;
 boolean s = false;
 boolean eye_open = false;
+PFont font;
+
+PFont SansSerif;
 
 void setup() {
   size(900, 900);
+  font = createFont("adrip1.ttf", 60);
+  SansSerif = createFont("SansSerif", 60);
+
 }
 
 
@@ -103,6 +109,9 @@ void draw() {
     z+=1;
     eye_open = true;
   }
+  
+  
+  graffiti(290,200, eye_open);
 }
 
 
@@ -231,7 +240,7 @@ float camMove(float x, float rand, float speed, int randomcar, boolean eye) {
       }
       return x;
     } else if (x < -20) {
-      
+
       x = save;
       if (second()%5 == 0) {
         rand = -1;
@@ -300,6 +309,7 @@ void wantedcar (int x, int y) {
   rect(0, 0, 100, 150);
 
   fill(0);
+  textFont(SansSerif);
   textSize(20);
   text("WANTED", 10, 20);
 
@@ -309,7 +319,15 @@ void wantedcar (int x, int y) {
   popMatrix();
 }
 
-
+void graffiti(int x, int y, boolean s) {
+  translate(x,y);
+  textFont(font);
+  if (s == true){
+   fill(255,0,0); 
+  }
+  
+  text("THEY ARE WATCHING",0,0);
+}
 
 
 void eyes (int x, int y, int z) {
